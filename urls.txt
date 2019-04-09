@@ -1,0 +1,10 @@
+http://www.multiplayerpiano.com/Client.js
+http://www.multiplayerpiano.com/Color.js
+http://www.multiplayerpiano.com/NoteQuota.js
+http://www.multiplayerpiano.com/jquery.min.js
+http://www.multiplayerpiano.com/lame.min.js
+http://www.multiplayerpiano.com/script.js
+http://www.multiplayerpiano.com/util.js
+http://www.multiplayerpiano.com/screen.css
+http://www.multiplayerpiano.com/workerTimer.js
+http://www.multiplayerpiano.com/index.html
