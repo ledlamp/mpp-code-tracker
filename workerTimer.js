@@ -1,6 +1,1 @@
-self.onmessage = function(event)
-	{
-		setTimeout(function(){
-			postMessage({args:event.data.args});
-		},event.data.delay);
-	}
+Found. Redirecting to https://www.multiplayerpiano.com:8443/workerTimer.js
