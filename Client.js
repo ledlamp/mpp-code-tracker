@@ -74,7 +74,7 @@ Client.prototype.connect = function() {
 	if(typeof module !== "undefined") {
 		// nodejsicle
 		this.ws = new WebSocket(this.uri, {
-			origin: "http://www.multiplayerpiano.com"
+			origin: "https://www.multiplayerpiano.com"
 		});
 	} else {
 		// browseroni
@@ -197,6 +197,16 @@ Client.prototype.getChannelSetting = function(key) {
 		return this.offlineChannelSettings[key];
 	} 
 	return this.channel.settings[key];
+};
+
+Client.prototype.setChannelSettings = function(settings) {
+	if(!this.isConnected() || !this.channel || !this.channel.settings) {
+		return;
+	} 
+	for(var key in settings) {
+		this.desiredChannelSettings[key] = settings[key];
+	}
+	this.sendArray([{m: "chset", set: this.desiredChannelSettings}]);
 };
 
 Client.prototype.offlineParticipant = {
