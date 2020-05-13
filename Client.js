@@ -35,6 +35,7 @@ function Client(uri) {
 	this.noteBuffer = [];
 	this.noteBufferTime = 0;
 	this.noteFlushInterval = undefined;
+	this['🐈'] = 0;
 
 	this.bindEventListeners();
 
@@ -111,7 +112,7 @@ Client.prototype.connect = function() {
 	});
 	this.ws.addEventListener("open", function(evt) {
 		self.connectionTime = Date.now();
-		self.sendArray([{m: "hi"}]);
+		self.sendArray([{"m": "hi", "🐈": self['🐈']++ || undefined }]);
 		self.pingInterval = setInterval(function() {
 			self.sendArray([{m: "t", e: Date.now()}]);
 		}, 20000);
@@ -152,6 +153,7 @@ Client.prototype.bindEventListeners = function() {
 	});
 	this.on("ch", function(msg) {
 		self.desiredChannelId = msg.ch._id;
+		self.desiredChannelSettings = msg.ch.settings;
 		self.channel = msg.ch;
 		if(msg.p) self.participantId = msg.p;
 		self.setParticipants(msg.ppl);
@@ -185,10 +187,6 @@ Client.prototype.setChannel = function(id, set) {
 };
 
 Client.prototype.offlineChannelSettings = {
-	lobby: true,
-	visible: false,
-	chat: false,
-	crownsolo: false,
 	color:"#ecfaed"
 };
 
@@ -203,10 +201,12 @@ Client.prototype.setChannelSettings = function(settings) {
 	if(!this.isConnected() || !this.channel || !this.channel.settings) {
 		return;
 	} 
-	for(var key in settings) {
-		this.desiredChannelSettings[key] = settings[key];
+	if(this.desiredChannelSettings){
+		for(var key in settings) {
+			this.desiredChannelSettings[key] = settings[key];
+		}
+		this.sendArray([{m: "chset", set: this.desiredChannelSettings}]);
 	}
-	this.sendArray([{m: "chset", set: this.desiredChannelSettings}]);
 };
 
 Client.prototype.offlineParticipant = {

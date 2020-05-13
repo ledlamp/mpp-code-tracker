@@ -81,7 +81,8 @@ table { border: 0; padding: 0; margin: 0; }
 	font-size: 10px; }
 #crown span { margin-left: 16px; margin-top: 2px; }
 
-#crownsolo-notice { position: fixed; top: 20%; width: 100%; text-align: center; opacity: 0.5; font-size: 20px; pointer-events: none; display: none; }
+#room-notice { position: fixed; top: 20%; width: 100%; text-align: center; opacity: 0.5; font-size: 20px; pointer-events: none; display: none; }
+#room-notice p { margin: 1em; }
 
 #bottom{ position: fixed; bottom: 0px; left: 0px; width: 100%; height: 60px; background: #9a9; margin-bottom: 3px; }
 
@@ -91,7 +92,7 @@ table { border: 0; padding: 0; margin: 0; }
 #room .info { white-space: nowrap; line-height: 12px; overflow: hidden; height: 20px; }
 
 #room .info.lobby { color: #eeffbb; }
-#room .info.not-visible { color: #ddeeff; }
+#room .info.not-visible { color: #0d3761; }
 /* #room .info.crownsolo:after { content: url('/crownsolo.png'); position: relative; top: 2px; margin-left: 4px; }
  #room .info.no-chat:after { content: url('/no-chat.png'); position: relative; top: 2px; margin-left: 4px; } */
 #room .info.banned { color: rgba(255, 64, 64, 0.5); }
@@ -234,7 +235,7 @@ table { border: 0; padding: 0; margin: 0; }
 #email:before { content: url('envelope.png'); margin: 4px; }
 
 
-#crownsolo-notice { z-index: 1; }
+#room-notice { z-index: 1; }
 #cursors { z-index: 2; }
 #chat { z-index: 100; }
 #social { z-index: 200; }

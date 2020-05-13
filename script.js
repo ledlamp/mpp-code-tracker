@@ -1475,16 +1475,26 @@ Rect.prototype.contains = function(x, y) {
 
 	// Crownsolo notice
 	gClient.on("ch", function(msg) {
+		let notice = "";
+		let has_notice = false;
 		if(msg.ch.settings.crownsolo) {
-			if($("#crownsolo-notice").length == 0) {
-				$('<div id="crownsolo-notice">').text('This room is set to "only the owner can play."').appendTo("body").fadeIn(1000);
-			}
+			has_notice = true;
+			notice += '<p>This room is set to "only the owner can play."</p>';
+		}
+		if(msg.ch.settings['no cussing']){
+			has_notice = true;
+			notice += '<p>This room is set to "no cussing."</p>';
+		}
+		let notice_div = $("#room-notice");
+		if(has_notice) {
+			notice_div.html(notice);
+			if(notice_div.is(':hidden')) notice_div.fadeIn(1000);
 		} else {
-			$("#crownsolo-notice").remove();
+			if(notice_div.is(':visible')) notice_div.fadeOut(1000);
 		}
 	});
 	gClient.on("disconnect", function() {
-		$("#crownsolo-notice").remove();
+		$("#room-notice").fadeOut(1000);
 	});
 
 
@@ -2100,6 +2110,8 @@ Rect.prototype.contains = function(x, y) {
 		else info.removeClass("no-chat");
 		if(channel.settings.crownsolo) info.addClass("crownsolo");
 		else info.removeClass("crownsolo");
+		if(channel.settings['no cussing']) info.addClass("no-cussing");
+		else info.removeClass("no-cussing");
 		if(!channel.settings.visible) info.addClass("not-visible");
 		else info.removeClass("not-visible");
 	});
@@ -2120,6 +2132,8 @@ Rect.prototype.contains = function(x, y) {
 			else info.removeClass("no-chat");
 			if(room.settings.crownsolo) info.addClass("crownsolo");
 			else info.removeClass("crownsolo");
+			if(room.settings['no cussing']) info.addClass("no-cussing");
+			else info.removeClass("no-cussing");
 			if(!room.settings.visible) info.addClass("not-visible");
 			else info.removeClass("not-visible");
 			if(room.banned) info.addClass("banned");
@@ -2163,7 +2177,7 @@ Rect.prototype.contains = function(x, y) {
 	$("#play-alone-btn").on("click", function(evt) {
 		evt.stopPropagation();
 		var room_name = "Room" + Math.floor(Math.random() * 1000000000000);
-		changeRoom(room_name, "right", {"visible": false, "chat": true, "crownsolo": false});
+		changeRoom(room_name, "right", {"visible": false});
 		setTimeout(function() {
 			new Notification({id: "share", title: "Playing alone", html: 'You are playing alone in a room by yourself, but you can always invite \
 				friends by sending them the link.<br/><br/>\
@@ -2216,8 +2230,7 @@ Rect.prototype.contains = function(x, y) {
 			var name = $("#new-room .text[name=name]").val();
 			var settings = {
 				visible: $("#new-room .checkbox[name=visible]").is(":checked"),
-				chat: true,
-				crownsolo: false
+				chat: true
 			};
 			$("#new-room .text[name=name]").val("");
 			closeModal();
@@ -2468,7 +2481,7 @@ Rect.prototype.contains = function(x, y) {
 
 			scrollToBottom: function() {
 				var ele = $("#chat ul").get(0);
-				ele.scrollTop = ele.scrollHeight;
+				ele.scrollTop = ele.scrollHeight - ele.clientHeight;
 			},
 
 			blur: function() {
