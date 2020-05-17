@@ -9,7 +9,7 @@ $(function() {
 
 	var gMidiVolumeTest = (window.location.hash && window.location.hash.match(/^(?:#.+)*#midivolumetest(?:#.+)*$/i));
 
-	var gMidiOutTest = true;
+	var gMidiOutTest;
 
 	if (!Array.prototype.indexOf) {
 		Array.prototype.indexOf = function(elt /*, from*/) {
@@ -801,6 +801,20 @@ Rect.prototype.contains = function(x, y) {
 		this.ctx.restore();
 	};
 
+	CanvasRenderer.prototype.renderNoteLyrics = function() {
+		// render lyric
+		for(var part_id in this.noteLyrics) {
+			if(!this.noteLyrics.hasOwnProperty(i)) continue;
+			var lyric = this.noteLyrics[part_id];
+			var lyric_x = x;
+			var lyric_y = this.whiteKeyHeight + 1;
+			this.ctx.fillStyle = key.lyric.color;
+			var alpha = this.ctx.globalAlpha;
+			this.ctx.globalAlpha = alpha - ((now - key.lyric.time) / 1000);
+			this.ctx.fillRect(x, y, 10, 10);
+		}
+	};
+
 	CanvasRenderer.prototype.getHit = function(x, y) {
 		for(var j = 0; j < 2; j++) {
 			var sharp = j ? false : true; // black keys first
@@ -1063,29 +1077,30 @@ Rect.prototype.contains = function(x, y) {
 		this.audio = new audio_engine().init();
 	};
 
-	Piano.prototype.play = function(note, vol, participant, delay_ms) {
-		if(!this.keys.hasOwnProperty(note)) return;
+	Piano.prototype.play = function(note, vol, participant, delay_ms, lyric) {
+		if(!this.keys.hasOwnProperty(note) || !participant) return;
 		var key = this.keys[note];
 		if(key.loaded) this.audio.play(key.note, vol, delay_ms, participant.id);
-		if(typeof gMidiOutTest === "function") gMidiOutTest(key.note, vol * 100, delay_ms);
+		if(gMidiOutTest) gMidiOutTest(key.note, vol * 100, delay_ms);
 		var self = this;
-		var jq_namediv = $(typeof participant == "undefined" ? null : participant.nameDiv);
-		if(jq_namediv) {
+		setTimeout(function() {
+			self.renderer.visualize(key, participant.color);
+			if(lyric) {
+
+			}
+			var jq_namediv = $(participant.nameDiv);
+			jq_namediv.addClass("play");
 			setTimeout(function() {
-				self.renderer.visualize(key, typeof participant == "undefined" ? "yellow" : (participant.color || "#777"));
-				jq_namediv.addClass("play");
-				setTimeout(function() {
-					jq_namediv.removeClass("play");
-				}, 30);
-			}, delay_ms);
-		}
+				jq_namediv.removeClass("play");
+			}, 30);
+		}, delay_ms || 0);
 	};
 
 	Piano.prototype.stop = function(note, participant, delay_ms) {
 		if(!this.keys.hasOwnProperty(note)) return;
 		var key = this.keys[note];
 		if(key.loaded) this.audio.stop(key.note, delay_ms, participant.id);
-		if(typeof gMidiOutTest === "function") gMidiOutTest(key.note, 0, delay_ms);
+		if(gMidiOutTest) gMidiOutTest(key.note, 0, delay_ms);
 	};
 	
 	var gPiano = new Piano(document.getElementById("piano"));
