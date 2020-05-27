@@ -90,7 +90,7 @@ Client.prototype.connect = function() {
 		clearInterval(self.pingInterval);
 		clearInterval(self.noteFlushInterval);
 
-		self.emit("disconnect");
+		self.emit("disconnect", evt);
 		self.emit("status", "Offline mode");
 
 		// reconnect!
@@ -106,8 +106,8 @@ Client.prototype.connect = function() {
 		var ms = ms_lut[idx];
 		setTimeout(self.connect.bind(self), ms);
 	});
-	this.ws.addEventListener("error", function() {
-		console.trace(arguments);
+	this.ws.addEventListener("error", function(err) {
+		self.emit("wserror", err);
 		self.ws.close(); // self.ws.emit("close");
 	});
 	this.ws.addEventListener("open", function(evt) {

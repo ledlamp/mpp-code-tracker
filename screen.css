@@ -146,8 +146,8 @@ table { border: 0; padding: 0; margin: 0; }
 .notification-body:after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -3px; border-top: 10px solid transparent;
     border-top-color: inherit; border-left: 6px solid transparent; border-right: 6px solid transparent; }
 .title { border-bottom: 1px solid #f84; font-size: 16px; font-weight: bold; padding-bottom: 5px; margin-bottom: 8px; }
-.notification .x { position: absolute; right: 4px; top: 0; cursor: pointer; font-size: 20px; color: #f84; text-shadow: none; }
-.notification .x:hover { font-weight: bolder; }
+.notification .x { position: absolute; right: 4px; top: 0px; cursor: pointer; font-size: 20px; color: #f84; text-shadow: none; }
+.notification .x:hover { font-weight: bold; }
 .notification.classic .notification-body { width: 400px; background: #fea; border-color: #fea;}
 .notification.short .title { display: none; }
 

@@ -876,7 +876,7 @@ Rect.prototype.contains = function(x, y) {
 	    this.notification;
 	    this.packs = [];
 	    this.piano = piano;
-	    this.soundSelection = localStorage.soundSelection || "MPP Classic";
+	    this.soundSelection = localStorage?.soundSelection || "MPP Classic";
 	    this.addPack({name: "MPP Classic", keys: Object.keys(this.piano.keys), ext: ".mp3", url: "/sounds/mppclassic/"});
 	}
 
@@ -984,7 +984,7 @@ Rect.prototype.contains = function(x, y) {
 	            });
 	        })();
 	    }
-	    localStorage.soundSelection = pack.name;
+	    if(localStorage) localStorage.soundSelection = pack.name;
 	    this.soundSelection = pack.name;
 	};
 
@@ -1186,6 +1186,9 @@ Rect.prototype.contains = function(x, y) {
 	gClient.setChannel(channel_id);
 	gClient.start();
 
+	gClient.on("disconnect", function(evt) {
+		console.log(evt);
+	});
 
 	// Setting status
 	(function() {
@@ -1391,7 +1394,9 @@ Rect.prototype.contains = function(x, y) {
 				gPiano.stop(note.n, participant, ms);
 			} else {
 				var vel = (typeof note.v !== "undefined")? parseFloat(note.v) : DEFAULT_VELOCITY;
-				if(vel < 0) vel = 0; else if (vel > 1) vel = 1;
+				if(!vel) vel = 0;
+				else if(vel < 0) vel = 0;
+				else if (vel > 1) vel = 1;
 				gPiano.play(note.n, vel, participant, ms);
 				if(enableSynth) {
 					gPiano.stop(note.n, participant, ms + 1000);
@@ -1576,10 +1581,8 @@ Rect.prototype.contains = function(x, y) {
 
 
 
-
-	var gPianoMutes = [];
-
-	var gChatMutes = [];
+	var gPianoMutes = (localStorage?.pianoMutes || "").split(',').filter(v => v);
+	var gChatMutes = (localStorage?.chatMutes || "").split(',').filter(v => v);
 
 
  	
@@ -1878,6 +1881,7 @@ Rect.prototype.contains = function(x, y) {
 				$('<div class="menu-item">Mute Notes</div>').appendTo(menu)
 				.on("mousedown touchstart", function(evt) {
 					gPianoMutes.push(part._id);
+					if(localStorage) localStorage.pianoMutes = gPianoMutes.join(',');
 					$(part.nameDiv).addClass("muted-notes");
 				});
 			} else {
@@ -1886,6 +1890,7 @@ Rect.prototype.contains = function(x, y) {
 					var i;
 					while((i = gPianoMutes.indexOf(part._id)) != -1)
 						gPianoMutes.splice(i, 1);
+					if(localStorage) localStorage.pianoMutes = gPianoMutes.join(',');
 					$(part.nameDiv).removeClass("muted-notes");
 				});
 			}
@@ -1893,6 +1898,7 @@ Rect.prototype.contains = function(x, y) {
 				$('<div class="menu-item">Mute Chat</div>').appendTo(menu)
 				.on("mousedown touchstart", function(evt) {
 					gChatMutes.push(part._id);
+					if(localStorage) localStorage.chatMutes = gChatMutes.join(',');
 					$(part.nameDiv).addClass("muted-chat");
 				});
 			} else {
@@ -1901,6 +1907,7 @@ Rect.prototype.contains = function(x, y) {
 					var i;
 					while((i = gChatMutes.indexOf(part._id)) != -1)
 						gChatMutes.splice(i, 1);
+					if(localStorage) localStorage.chatMutes = gChatMutes.join(',');
 					$(part.nameDiv).removeClass("muted-chat");
 				});
 			}
@@ -1908,7 +1915,9 @@ Rect.prototype.contains = function(x, y) {
 				$('<div class="menu-item">Mute Completely</div>').appendTo(menu)
 				.on("mousedown touchstart", function(evt) {
 					gPianoMutes.push(part._id);
+					if(localStorage) localStorage.pianoMutes = gPianoMutes.join(',');
 					gChatMutes.push(part._id);
+					if(localStorage) localStorage.chatMutes = gChatMutes.join(',');
 					$(part.nameDiv).addClass("muted-notes");
 					$(part.nameDiv).addClass("muted-chat");
 				});
@@ -1921,6 +1930,8 @@ Rect.prototype.contains = function(x, y) {
 						gPianoMutes.splice(i, 1);
 					while((i = gChatMutes.indexOf(part._id)) != -1)
 						gChatMutes.splice(i, 1);
+					if(localStorage) localStorage.pianoMutes = gPianoMutes.join(',');
+					if(localStorage) localStorage.chatMutes = gChatMutes.join(',');
 					$(part.nameDiv).removeClass("muted-notes");
 					$(part.nameDiv).removeClass("muted-chat");
 				});
