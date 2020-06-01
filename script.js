@@ -357,7 +357,7 @@ Rect.prototype.contains = function(x, y) {
 	AudioEngineWeb.prototype.init = function(cb) {
 		AudioEngine.prototype.init.call(this);
 
-		this.context = new AudioContext();
+		this.context = new AudioContext({latencyHint: 'interactive'});
 
 		this.masterGain = this.context.createGain();
 		this.masterGain.connect(this.context.destination);
