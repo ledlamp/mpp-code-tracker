@@ -876,7 +876,7 @@ Rect.prototype.contains = function(x, y) {
 	    this.notification;
 	    this.packs = [];
 	    this.piano = piano;
-	    this.soundSelection = localStorage?.soundSelection || "MPP Classic";
+	    this.soundSelection = localStorage.soundSelection ? localStorage.soundSelection : "MPP Classic";
 	    this.addPack({name: "MPP Classic", keys: Object.keys(this.piano.keys), ext: ".mp3", url: "/sounds/mppclassic/"});
 	}
 
@@ -1581,8 +1581,8 @@ Rect.prototype.contains = function(x, y) {
 
 
 
-	var gPianoMutes = (localStorage?.pianoMutes || "").split(',').filter(v => v);
-	var gChatMutes = (localStorage?.chatMutes || "").split(',').filter(v => v);
+	var gPianoMutes = (localStorage.pianoMutes ? localStorage.pianoMutes : "").split(',').filter(v => v);
+	var gChatMutes = (localStorage.pianoMutes ? localStorage.pianoMutes : "").split(',').filter(v => v);
 
 
  	
