@@ -19,7 +19,10 @@
 <body style="
     margin: 0;
 ">
-<iframe src="https://multiplayerpiano.net/" style="width: 100%;border: 0;height: 100%;">
+
+    <script>
+      document.body.innerHTML = document.body.innerHTML + "<iframe src=\"https://mppclone.com/\" style=\"width: 100%;border: 0;height: 100%;\">";
+    </script>
 </iframe>
 </body>
 </html>
