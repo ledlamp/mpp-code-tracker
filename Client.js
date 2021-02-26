@@ -68,10 +68,11 @@ Client.prototype.stop = function() {
 	this.ws.close();
 };
 
-Client.prototype.connect = function() {
+Client.prototype.connect = function(log) {
 	if(!this.canConnect || !this.isSupported() || this.isConnected() || this.isConnecting())
 		return;
 	this.emit("status", "Connecting...");
+	console.log(`Connect to ${this.uri}`)
 	if(typeof module !== "undefined") {
 		// nodejsicle
 		this.ws = new WebSocket(this.uri, {
@@ -83,6 +84,7 @@ Client.prototype.connect = function() {
 	}
 	var self = this;
 	this.ws.addEventListener("close", function(evt) {
+		log && console.log(`close`, evt)
 		self.user = undefined;
 		self.participantId = undefined;
 		self.channel = undefined;
@@ -107,10 +109,12 @@ Client.prototype.connect = function() {
 		setTimeout(self.connect.bind(self), ms);
 	});
 	this.ws.addEventListener("error", function(err) {
+		log && console.log(`ws error`, err)
 		self.emit("wserror", err);
 		self.ws.close(); // self.ws.emit("close");
 	});
 	this.ws.addEventListener("open", function(evt) {
+		log && console.log(`ws open`)
 		self.connectionTime = Date.now();
 		self.sendArray([{"m": "hi", "🐈": self['🐈']++ || undefined }]);
 		self.pingInterval = setInterval(function() {
@@ -132,6 +136,7 @@ Client.prototype.connect = function() {
 	});
 	this.ws.addEventListener("message", function(evt) {
 		var transmission = JSON.parse(evt.data);
+		log && console.log(`message`, transmission)
 		for(var i = 0; i < transmission.length; i++) {
 			var msg = transmission[i];
 			self.emit(msg.m, msg);

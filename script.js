@@ -1181,8 +1181,10 @@ Rect.prototype.contains = function(x, y) {
 	if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
 	if(channel_id == "") channel_id = "lobby";
 
-	var wssport = window.location.hostname.includes('multiplayerpiano.com') ? 443 : 8081;
-	var gClient = new Client("wss://" + window.location.hostname + ":" + wssport);
+	var isProd =  window.location.hostname.includes('multiplayerpiano.com')
+	var wssport = isProd ? 443 : 8081;
+	var protocol = isProd ? 'wss' : 'ws'
+	var gClient = new Client(protocol + "://" + window.location.hostname + ":" + wssport);
 	gClient.setChannel(channel_id);
 	gClient.start();
 
