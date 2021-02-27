@@ -914,7 +914,7 @@ Rect.prototype.contains = function(x, y) {
 		}
 
 		if (typeof pack == "string") {
-			$.getJSON(pack + "/info.json").done(function(json) {
+			$.getJSON(pack + "info.json").done(function(json) {
 				json.url = pack;
 				add(json);
 			});
@@ -1171,20 +1171,27 @@ Rect.prototype.contains = function(x, y) {
 
 
 
-
+	function getParameterByName(name, url = window.location.href) {
+		name = name.replace(/[\[\]]/g, '\\$&');
+		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	}
 
 // internet science
 
 ////////////////////////////////////////////////////////////////
 
-	var channel_id = decodeURIComponent(window.location.pathname);
+	var channel_id = decodeURIComponent(getParameterByName('c'));
 	if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
 	if(channel_id == "") channel_id = "lobby";
 
 	var isProd =  window.location.hostname.includes('multiplayerpiano.com')
 	var wssport = isProd ? 443 : 8081;
-	var protocol = isProd ? 'wss' : 'ws'
-	var gClient = new Client(protocol + "://" + window.location.hostname + ":" + wssport);
+	var protocol = isProd ? 'wss' : 'ws'////
+	var gClient = new Client(protocol + "://" + (isProd ? 'app.multiplayerpiano.com' : window.location.hostname) + ":" + wssport);
 	gClient.setChannel(channel_id);
 	gClient.start();
 
@@ -2302,7 +2309,7 @@ Rect.prototype.contains = function(x, y) {
 		if(name == "") name = "lobby";
 		if(gClient.channel && gClient.channel._id === name) return;
 		if(push) {
-			var url = "/" + encodeURIComponent(name).replace("'", "%27");
+			var url = "?c=" + encodeURIComponent(name).replace("'", "%27");
 			if(window.history && history.pushState) {
 				history.pushState({"depth": gHistoryDepth += 1, "name": name}, "Piano > " + name, url);
 			} else {
