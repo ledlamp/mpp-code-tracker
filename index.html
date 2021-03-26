@@ -7,11 +7,121 @@
           content="An online piano you can play alone or with others in real-time. MIDI support, 88 keys, velocity sensitive.  You can show off your skill or chat while listening to others play."/>
     <link rel="stylesheet" href="/screen.css"/>
     <link rel="canonical" href="https://multiplayerpiano.com/">
+
+
+    <script>
+      window.aiptag = window.aiptag || {cmd: []};
+      aiptag.cmd.display = aiptag.cmd.display || [];
+      aiptag.cmd.player = aiptag.cmd.player || [];
+
+      //CMP tool settings
+      aiptag.cmp = {
+        show: true,
+        position: "centered",  //centered, bottom
+        button: true,
+        buttonText: "Privacy settings",
+        buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
+      }
+
+      aiptag.cmd.player.push(function() {
+        aiptag.adplayer = new aipPlayer({
+          AD_WIDTH: 960,
+          AD_HEIGHT: 540,
+          AD_DISPLAY: 'default', //default, fullscreen, center, fill
+          LOADING_TEXT: 'loading advertisement',
+          PREROLL_ELEM: function(){return document.getElementById('preroll')},
+          AIP_COMPLETE: function (evt)  {
+            /*******************
+             ***** WARNING *****
+             *******************
+             Please do not remove the PREROLL_ELEM
+             from the page, it will be hidden automaticly.
+             If you do want to remove it use the AIP_REMOVE callback.
+             */
+            alert("Preroll Ad Completed: " + evt);
+          },
+          AIP_REMOVE: function ()  {
+            // Here it's save to remove the PREROLL_ELEM from the page if you want. But it's not recommend.
+          }
+        });
+      });
+
+      function show_preroll() {
+        //check if the adslib is loaded correctly or blocked by adblockers etc.
+        if (typeof aiptag.adplayer !== 'undefined') {
+          aiptag.cmd.player.push(function() { aiptag.adplayer.startPreRoll(); });
+        } else {
+          //Adlib didnt load this could be due to an adblocker, timeout etc.
+          //Please add your script here that starts the content, this usually is the same script as added in AIP_COMPLETE or AIP_REMOVE.
+          alert("Ad Could not be loaded, load your content here");
+        }
+      }
+    </script>
+    <script async src="//api.adinplay.com/libs/aiptag/pub/BTP/multiplayerpiano.com/tag.min.js"></script>
 </head>
 <body>
 
+<style>
+    .ad1 {
+        position: fixed;
+        top: 100px;
+        z-index: 99999;
+        /*background: red;*/
+        width: 970px;
+        height: 90px;
+        right: 0;
+    }
+    .discord {
+        background: white;
+        padding: 10px;
+        height: 35px;
+        position: fixed;
+        right: 0;
+        top: 24px;
+        z-index: 99999;
+    }
+    .blog {
+        background: white;
+        padding: 10px;
+        height: 8px;
+        line-height: 7px;
+        position: fixed;
+        right: 153px;
+        top: 0px;
+        z-index: 99999;
+        font-size: 17px;
+        border: 3px solid #ff4466;
+    }
+    .contribute {
+        background: white;
+        padding: 10px;
+        height: 8px;
+        line-height: 7px;
+        position: fixed;
+        right: 265px;
+        top: 0px;
+        z-index: 99999;
+        font-size: 17px;
+        border: 3px solid #ff4466;
+    }
+</style>
+
+<script>
+    setInterval(function(){
+      aiptag.cmd.display.push(function() { aipDisplayTag.display('multiplayerpiano-com_970x90'); });
+    }, 15 * 1000)
+</script>
+
+<div class='ad1' id='multiplayerpiano-com_970x90'>
+    <script type='text/javascript'>
+      aiptag.cmd.display.push(function() { aipDisplayTag.display('multiplayerpiano-com_970x90'); });
+    </script>
+</div>
+
+<a class="discord" href="https://discord.gg/Xr5dubEYgV" target="_blank">Join Official Discord 2021</a>
+<a class="blog" href="https://multiplayerpiano.com/c/latest" target="_blank">Piano Blog</a>
+<a class="contribute" href="https://multiplayerpiano.com/contribute-piano/" target="_blank">Contribute</a>
 <div id="social">
-    <a href="https://discord.gg/YJwP2j5sbX" target="_blank">Join Official Discord 2021</a>
     <div id="like-button">
         <div class="fb-like" data-href="https://www.facebook.com/MultiplayerPiano/" data-layout="button_count"
              data-action="like" data-size="small" data-show-faces="false" data-share="true"></div>
