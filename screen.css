@@ -213,7 +213,7 @@ table { border: 0; padding: 0; margin: 0; }
 #chat.chatting li { display: list-item !important; opacity: 1 !important; text-shadow: #aaa 1px 1px; }
 #chat.chatting ul { max-height: 50em; overflow-y: scroll; overflow-x: hidden; word-wrap: break-word; }
 
-#social { position: fixed; top: 4px; right: 6px; width: 300px; font-size: 12px; display: flex;}
+#social { position: fixed; top: 4px; right: 6px; width: 324px; font-size: 12px; display: flex;}
 #social #more-button { margin-top: 4px; width: 77px; height: 90px; border-radius: 5px; border: 1px solid #abb; cursor: pointer;
 	transition: all 0.25s; box-shadow: 1px 1px 8px #bb9; color: #788; text-shadow: none;
 	background: url('kitten1.png') 0px 4px no-repeat; background-color: #dee; }
@@ -238,7 +238,7 @@ table { border: 0; padding: 0; margin: 0; }
 #room-notice { z-index: 1; }
 #cursors { z-index: 2; }
 #chat { z-index: 100; }
-#social { z-index: 200; }
+#social { z-index: 20000; }
 #names { z-index: 300; }
 #piano { z-index: 400; }
 #piano .key { z-index: 401; }

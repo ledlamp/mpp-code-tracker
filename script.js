@@ -1184,14 +1184,14 @@ Rect.prototype.contains = function(x, y) {
 
 ////////////////////////////////////////////////////////////////
 
-	var channel_id = decodeURIComponent(getParameterByName('c'));
-	if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
-	if(channel_id == "") channel_id = "lobby";
+	var channel_id = decodeURIComponent(getParameterByName('c') || 'lobby');
+	// if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
+	// if(channel_id == "") channel_id = "lobby";
 
 	var isProd =  window.location.hostname.includes('multiplayerpiano.com')
 	var wssport = isProd ? 443 : 8081;
-	var protocol = isProd ? 'wss' : 'ws'////
-	var gClient = new Client(protocol + "://" + (isProd ? 'app.multiplayerpiano.com' : window.location.hostname) + ":" + wssport);
+	var protocol = isProd ? 'wss' : 'ws'
+	var gClient = new Client(protocol + "://" + window.location.hostname + ":" + wssport);
 	gClient.setChannel(channel_id);
 	gClient.start();
 
@@ -1591,7 +1591,7 @@ Rect.prototype.contains = function(x, y) {
 
 
 	var gPianoMutes = (localStorage.pianoMutes ? localStorage.pianoMutes : "").split(',').filter(v => v);
-	var gChatMutes = (localStorage.pianoMutes ? localStorage.pianoMutes : "").split(',').filter(v => v);
+	var gChatMutes = (localStorage.chatMutes ? localStorage.chatMutes : "").split(',').filter(v => v);
 
 
  	
