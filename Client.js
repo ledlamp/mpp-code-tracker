@@ -116,7 +116,7 @@ Client.prototype.connect = function(log) {
 	this.ws.addEventListener("open", function(evt) {
 		log && console.log(`ws open`)
 		self.connectionTime = Date.now();
-		self.sendArray([{"m": "hi", "🐈": self['🐈']++ || undefined }]);
+		self.sendArray([{"m": "hi", "x": 1, "🐈": self['🐈']++ || undefined }]);
 		self.pingInterval = setInterval(function() {
 			self.sendArray([{m: "t", e: Date.now()}]);
 		}, 20000);

@@ -1191,7 +1191,7 @@ Rect.prototype.contains = function(x, y) {
 	var isProd =  window.location.hostname.includes('multiplayerpiano.com')
 	var wssport = isProd ? 443 : 8081;
 	var protocol = isProd ? 'wss' : 'ws'
-	var gClient = new Client(protocol + "://" + window.location.hostname + ":" + wssport);
+	var gClient = new Client(protocol + "://" + (isProd ? "app_legacy.multiplayerpiano.com" : window.location.hostname) + ":" + wssport);
 	gClient.setChannel(channel_id);
 	gClient.start();
 
