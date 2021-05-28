@@ -76,7 +76,7 @@ Client.prototype.connect = function(log) {
 	if(typeof module !== "undefined") {
 		// nodejsicle
 		this.ws = new WebSocket(this.uri, {
-			origin: "https://app_legacy.multiplayerpiano.com"
+			origin: "https://app.multiplayerpiano.com"
 		});
 	} else {
 		// browseroni
@@ -116,7 +116,7 @@ Client.prototype.connect = function(log) {
 	this.ws.addEventListener("open", function(evt) {
 		log && console.log(`ws open`)
 		self.connectionTime = Date.now();
-		self.sendArray([{"m": "hi", "x": 1, "🐈": self['🐈']++ || undefined }]);
+		self.sendArray([{"m": "hi", "🐈": self['🐈']++ || undefined }]);
 		self.pingInterval = setInterval(function() {
 			self.sendArray([{m: "t", e: Date.now()}]);
 		}, 20000);
